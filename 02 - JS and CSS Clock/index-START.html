@@ -54,7 +54,7 @@
       position: relative;
       width: 100%;
       height: 100%;
-      transform: translateY(-3px); /* account for the height of the clock hands */
+      /* transform: translateY(-3px); account for the height of the clock hands */
     }
 
     .hand {
@@ -63,13 +63,43 @@
       background: black;
       position: absolute;
       top: 50%;
+      /* 100 will start it at the correct side we want pointing up*/
+      transform-origin: 100%;  
+      transform:rotate(90deg);
+      transition: all .5s;
+      transition-timing-function: cubic-bezier(0, 2.69, 0.58, 1);
+    }
+    .min-hand{
+      background-color: aquamarine;
+    }
+    .second-hand{
+      background-color: red;
     }
 
   </style>
 
   <script>
+    function tickTock(){
+      // console.log("hi");
+      const now = new Date();
+      const seconds = now.getSeconds();
+      const minute = now.getMinutes();
+      const hour = now.getHours();
 
+      console.log(minute);
+      const minuteHand = document.querySelector(".min-hand");
+      const secondHand = document.querySelector(".second-hand");
+      const hourHand = document.querySelector(".hour-hand");
 
+      secondHand.style.transform = `rotate(${ (90+ ((seconds/60) * 360))}deg)`;
+      minuteHand.style.transform = `rotate(${ (90 +((minute / 60) * 360) + ((seconds/60)*6))}deg)`;
+      hourHand.style.transform = `rotate(${ (90+((hour/12) * 360)+ ((minute / 60) * 30))}deg)`
+
+    }
+
+    setInterval(() => {
+      tickTock()
+    }, 1000);
   </script>
 </body>
 </html>
